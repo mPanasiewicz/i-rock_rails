@@ -29,6 +29,23 @@ describe AchievementsController do
     end
   end
 
+  describe 'PUT update' do
+    let(:achievement) { FactoryGirl.create(:public_achievement) }
+
+    context 'valid data' do
+      let(:valid_data) { FactoryGirl.attributes_for(:public_achievement, title: 'New Title') }
+
+      it 'redirects to achievement show#action' do
+        put :update, id: achievement, achievement: valid_data
+        expect(response).to redirect_to(achievement)
+      end
+
+      it ' updates achievement in the database'
+    end
+    context 'invalid data' do
+    end
+  end
+
   describe 'GET new' do
     it 'renders :new templete' do
       get :new
