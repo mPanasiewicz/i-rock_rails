@@ -40,9 +40,24 @@ describe AchievementsController do
         expect(response).to redirect_to(achievement)
       end
 
-      it ' updates achievement in the database'
+      it 'updates achievement in the database' do
+        put :update, id: achievement, achievement: valid_data
+        achievement.reload
+        expect(achievement.title).to eq('New Title')
+      end
     end
     context 'invalid data' do
+      let(:invalid_data) { FactoryGirl.attributes_for(:public_achievement, title: '', description: 'new') }
+
+      it 'renders :edit template' do
+        put :update, id: achievement, achievement: invalid_data
+        expect(response).to render_template(:edit)
+      end
+      it 'doesn;t update achievement in database' do
+        put :update, id: achievement, achievement: invalid_data
+        achievement.reload
+        expect(achievement.description).not_to eq('new')
+      end
     end
   end
 
@@ -95,6 +110,20 @@ describe AchievementsController do
         expect { post :create, achievement: invalid_data }
           .not_to change(Achievement, :count)
       end
+    end
+  end
+
+  describe 'DELETE destroy' do
+    let(:achievement) { FactoryGirl.create(:public_achievement) }
+
+    it 'redirects to achievement#index' do
+      delete :destroy, id: achievement
+      expect(response).to redirect_to(achievements_path)
+    end
+
+    it 'deletes achievement from the database' do
+      delete :destroy, id: achievement
+      expect(Achievement.exists?(achievement.id)).to be_falsey
     end
   end
 end
