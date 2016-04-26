@@ -13,6 +13,7 @@ gem 'puma'
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'simple_form', '~> 3.2', '>= 3.2.1'
 gem 'redcarpet', '~> 3.3', '>= 3.3.4'
+gem 'devise'
 
 group :development, :test do
   gem 'byebug'
